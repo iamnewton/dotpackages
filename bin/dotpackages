@@ -1,0 +1,198 @@
+#!/usr/bin/env bash
+
+# constants
+readonly GITHUB_URL="github.com"
+readonly USERNAME="iamnewton"
+readonly REPO="dotpackages"
+readonly LOG="/tmp/$REPO.log"
+readonly INSTALL_DIR="$HOME/.$REPO"
+OS="$(uname)"
+readonly OS="${OS,,}"
+
+# Question logging
+print_question() {
+	local message=$1
+
+	echo "$(date) QUESTION:  $message" >> "$LOG"
+	printf "\\n%s===> %s?%s " "$(tput setaf 3)" "$message" "$(tput sgr0)"
+}
+
+# Command/Processing logging
+print_process() {
+	local message=$1
+
+	echo "$(date) PROCESSING: $message" >> "$LOG"
+	printf "%s┃%s %s...\\n" "$(tput setaf 6)" "$(tput sgr0)$(tput setaf 7)" "$message$(tput sgr0)"
+}
+
+# Informational logging
+print_info() {
+	local message=$1
+
+	echo "$(date) INFO: $message" >> $LOG
+	printf "%sInfo:%s\\n" "$(tput setaf 6)" "$(tput sgr0) $message"
+}
+
+# Warning logging
+print_warning() {
+	local message=$1
+
+	echo "$(date) WARNING: $message" >> "$LOG"
+	printf "%s⚠ Warning:%s!\\n" "$(tput setaf 3)" "$(tput sgr0) $message"
+}
+
+# Error logging
+print_error() {
+	local message=$1
+
+	echo "$(date) ERROR: $message" >> "$LOG"
+	printf "%s⊘ Error:%s %s. Aborting!\\n" "$(tput setaf 1)" "$(tput sgr0)" "$message"
+}
+
+# Success logging
+print_success() {
+	local message=$1
+
+	echo "$(date) SUCCESS: $message" >> "$LOG"
+	printf "%s✓ Success:%s\\n" "$(tput setaf 2)" "$(tput sgr0) $message"
+}
+
+npm_package() {
+	local package=$1
+
+	# Test whether npm package is already installed
+	print_process "Checking if $package is installed"
+	if ! npm list -g "$package" | grep "$package" &> /dev/null; then
+		print_process "Installing $package"
+		npm install --global --quiet "$package"
+	else
+		print_process "$package is already installed. Updating."
+		npm update "$package"
+	fi
+}
+
+install_packages() {
+	local file=$1
+
+	while IFS="" read -r p || [ -n "$p" ]
+	do
+		#printf '%s\n' "$p"
+		npm_package "$p"
+	done < "$file"
+}
+
+# Check for Homebrew; install brew
+if ! type -P 'brew' &> /dev/null; then
+	print_process "Installing Homebrew"
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+	# If we're on Linux, insert brew into the path temporarily to be able to use later
+	if [[ "$OS" == "linux"  ]]; then
+		print_process "Sourcing Homebrew to PATH"
+		eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+	fi
+
+	[[ $? ]] && print_success "Homebrew installed"
+fi
+
+# If missing, download and extract the dotpackages repository
+if [[ -d "$INSTALL_DIR" ]]; then
+	print_process "$REPO already installed.  Upgrading $REPO"
+	dotpackages
+else
+	print_warning "No $INSTALL_DIR found"
+
+	print_process "Creating directory at $INSTALL_DIR and setting permissions"
+	mkdir -p "$INSTALL_DIR"
+
+	print_process "Downloading repository to /tmp directory"
+	# (-#) shows the progress bar as # sign
+	# (-f) fail silently
+	# (-L) follow the headers
+	# (-o) output to a file
+	curl -#fLo /tmp/dotpackages.tar.gz "https://$GITHUB_URL/$USERNAME/$REPO/tarball/main"
+
+	print_process "Extracting files to $INSTALL_DIR"
+	tar -zxf "/tmp/$REPO.tar.gz" --strip-components 1 -C "$INSTALL_DIR"
+
+	print_process "Removing tarball from /tmp directory"
+	rm -rf "/tmp/$REPO.tar.gz"
+
+	[[ $? ]] && print_success "$INSTALL_DIR created, repository downloaded and extracted"
+fi
+
+if command -v 'git' &> /dev/null; then
+	# Change to the dotpackages directory
+	cd "$INSTALL_DIR" || exit
+
+	# Initialize the git repository if it's missing
+	print_process "Initializing git repository"
+	git init
+
+	print_process "Adding https://$GITHUB_URL/$USERNAME/$REPO.git as origin"
+	git remote add origin "https://$GITHUB_URL/$USERNAME/$REPO.git"
+
+	print_process "Downloading changes from origin"
+	git fetch origin main
+
+	# Reset the index and working tree to the fetched HEAD
+	# (submodules are cloned in the subsequent sync step)
+	print_process "Resetting index & working tree to fetched HEAD"
+	git reset --hard FETCH_HEAD
+
+	# Remove any untracked files
+	print_process "Removing any untracked files"
+	git clean -fd
+
+	[[ $? ]] && print_success "Repository has been initialized"
+
+	# Pull down the latest changes
+	print_process "Pulling down latest changes"
+	git pull --rebase origin main
+
+	[[ $? ]] && print_success "Repository has been updated"
+fi
+
+# Install Homebrew formulae
+if ! type -P 'brew' &> /dev/null; then
+	print_error "brew not found"
+	exit 1
+else
+	print_process "Installing Homebrew packages"
+
+	brew update
+	brew upgrade
+	brew bundle --file="$INSTALL_DIR/opt/Brewfile"
+	brew cleanup
+
+	[[ $? ]] && print_success "Installed all Homebrew packages"
+fi
+
+# Install Node packages
+if ! type -P 'npm' &> /dev/null; then
+	print_error "npm not found"
+	exit 1
+else
+	print_process "Installing and updating npm packages"
+	npm cache clean -f
+	n stable
+	install_packages "$INSTALL_DIR/opt/npm"
+
+	[[ $? ]] && print_success "Installed all Node packages"
+fi
+
+# Install 1password
+if ! [ -x "$(command -v op)" ]; then
+	print_process "Installing 1Password CLI"
+	readonly OP_DOMAIN="$USERNAME"
+	readonly OP_VERSION="v1.10.3"
+	curl -sS -o /tmp/1password.zip https://cache.agilebits.com/dist/1P/op/pkg/$OP_VERSION/op_linux_amd64_$OP_VERSION.zip
+	unzip /tmp/1password.zip op -d "$(brew --prefix)/bin"
+	rm -f /tmp/1password.zip
+
+	# Automatically set 1Password session after logging in
+	eval "$(op signin $OP_DOMAIN)" >> "$HOME/.bash_profile.local"
+	[[ $? ]] && print_success "Installed 1Password CLI"
+fi
+
+[[ $? ]] && print_success "dotpackages installed.  To upgrade, run dotpackages"
