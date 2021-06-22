@@ -194,7 +194,7 @@ if ! [ -x "$(command -v op)" ]; then
 	rm -f /tmp/1password.zip
 
 	# Automatically set 1Password session after logging in
-	printf "eval %s\\n" "$(op signin $OP_DOMAIN)" >> "$HOME/.bash_profile.local"
+	printf "eval \$(op signin %s)\\n" "$OP_DOMAIN" >> "$HOME/.bash_profile.local"
 	[[ $? ]] && print_success "Installed 1Password CLI"
 fi
 
