@@ -1,3 +1,4 @@
+alex
 analyze-css
 axe-cli
 broken-link-checker
@@ -20,7 +21,7 @@ is-up
 jsonlint
 lighthouse
 lock-cli
-markdownlint-cli
+markdownlint-cli2
 npm-issues
 os-name-cli
 pageres-cli
@@ -42,4 +43,5 @@ trash-cli
 uncss
 vtop
 webpagetest
+write-good
 yellowlabtools
