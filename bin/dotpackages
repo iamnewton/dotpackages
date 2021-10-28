@@ -110,10 +110,10 @@ if ! type -P 'brew' &> /dev/null; then
 fi
 
 # If missing, download and extract the dotpackages repository
-if [[ -d "$INSTALL_DIR" ]]; then
-	print_process "$REPO already installed.  Upgrading $REPO"
-	dotpackages
-else
+# @TODO: create upgrade command
+# print_process "$REPO already installed.  Upgrading $REPO"
+# dotpackages
+if ! [[ -d "$INSTALL_DIR" ]]; then
 	print_warning "No $INSTALL_DIR found"
 
 	print_process "Creating directory at $INSTALL_DIR and setting permissions"
@@ -135,7 +135,7 @@ else
 	[[ $? ]] && print_success "$INSTALL_DIR created, repository downloaded and extracted"
 fi
 
-if command -v 'git' &> /dev/null; then
+if ! [[ -d "$INSTALL_DIR/.git" ]]; then
 	# Change to the dotpackages directory
 	cd "$INSTALL_DIR" || exit
 
