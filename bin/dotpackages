@@ -185,14 +185,14 @@ else
 fi
 
 # Automatically set 1Password session after logging in
-if ! [ -x "$(command -v op)" ]; then
+if [ -x "$(command -v op)" ]; then
 	print_process "Configuring 1Password CLI"
 	printf "eval \$(op signin %s)\\n" "$USERNAME" >> "$HOME/.bash_profile.local"
 
 	[[ $? ]] && print_success "Configured 1Password CLI"
 fi
 
-if ! [ -x "$(command -v fzf)" ]; then
+if [ -x "$(command -v fzf)" ]; then
 	print_process "Installing FZF keybindings and fuzzy completion"
 	"$(brew --prefix)/opt/fzf/install"
 
