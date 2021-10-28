@@ -11,6 +11,7 @@ cask "postman"
 cask "slack"
 
 # browsers
+tap "homebrew/cask-versions"
 cask "brave-browser"
 cask "brave-browser-beta"
 cask "brave-browser-dev"
