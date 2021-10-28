@@ -184,18 +184,19 @@ else
 	[[ $? ]] && print_success "Installed all Node packages"
 fi
 
-# Install 1password
+# Automatically set 1Password session after logging in
 if ! [ -x "$(command -v op)" ]; then
-	print_process "Installing 1Password CLI"
-	readonly OP_DOMAIN="$USERNAME"
-	readonly OP_VERSION="v1.10.3"
-	curl -sS -o /tmp/1password.zip https://cache.agilebits.com/dist/1P/op/pkg/$OP_VERSION/op_linux_amd64_$OP_VERSION.zip
-	unzip /tmp/1password.zip op -d "$(brew --prefix)/bin"
-	rm -f /tmp/1password.zip
+	print_process "Configuring 1Password CLI"
+	printf "eval \$(op signin %s)\\n" "$USERNAME" >> "$HOME/.bash_profile.local"
 
-	# Automatically set 1Password session after logging in
-	printf "eval \$(op signin %s)\\n" "$OP_DOMAIN" >> "$HOME/.bash_profile.local"
-	[[ $? ]] && print_success "Installed 1Password CLI"
+	[[ $? ]] && print_success "Configured 1Password CLI"
+fi
+
+if ! [ -x "$(command -v fzf)" ]; then
+	print_process "Installing FZF keybindings and fuzzy completion"
+	"$(brew --prefix)/opt/fzf/install"
+
+	[[ $? ]] && print_success "Installed FZF keybindings and fuzzy completion"
 fi
 
 [[ $? ]] && print_success "dotpackages installed."
