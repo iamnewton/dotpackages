@@ -57,6 +57,20 @@ print_success() {
 	printf "%s✓ Success:%s\\n" "$(tput setaf 2)" "$(tput sgr0) $message"
 }
 
+seek_confirmation() {
+	local message=$1
+
+	print_warning "$message"
+	read -r -p "Continue? (y/n) " -n 1
+}
+
+is_confirmed() {
+	if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+		return 0
+	fi
+	return 1
+}
+
 npm_package() {
 	local package=$1
 
@@ -197,6 +211,15 @@ if [ -x "$(command -v fzf)" ]; then
 	"$(brew --prefix)/opt/fzf/install"
 
 	[[ $? ]] && print_success "Installed FZF keybindings and fuzzy completion"
+fi
+
+if [[ "$OS" == "darwin"  ]]; then
+	seek_confirmation "Do you want to install the MacOS apps?"
+	if is_confirmed; then
+		brew install mas
+		brew bundle --file="$INSTALL_DIR/opt/Brewfile.macos"
+		[[ $? ]] && print_success "Installed all MacOS apps"
+	fi
 fi
 
 [[ $? ]] && print_success "dotpackages installed."

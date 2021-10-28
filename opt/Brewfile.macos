@@ -1,0 +1,35 @@
+# utilities
+cask "1password"
+cask "alfred"
+cask "choosy"
+cask "dash"
+cask "fig"
+cask "gpg-suite"
+cask "iterm2"
+cask "marked"
+cask "postman"
+cask "slack"
+
+# browsers
+cask "brave-browser"
+cask "brave-browser-beta"
+cask "brave-browser-dev"
+cask "brave-browser-nightly"
+brew "chrome-cli"
+cask "chromium"
+cask "firefox"
+cask "firefox-beta"
+cask "firefox-developer-edition"
+cask "firefox-nightly"
+cask "google-chrome"
+cask "google-chrome-beta"
+cask "google-chrome-canary"
+cask "google-chrome-dev"
+cask "microsoft-edge"
+cask "microsoft-edge-beta"
+cask "microsoft-edge-dev"
+cask "safari-technology-preview"
+
+# mac app store apps
+mas "Magnet", id: 441258766
+mas "Textastic", id: 572491815
