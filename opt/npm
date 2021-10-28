@@ -4,6 +4,7 @@ axe-cli
 broken-link-checker
 browser-sync
 caniuse-cmd
+clipboard-cli
 colorguard
 cpy-cli
 css-reporter
