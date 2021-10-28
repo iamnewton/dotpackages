@@ -6,8 +6,8 @@ readonly USERNAME="iamnewton"
 readonly REPO="dotpackages"
 readonly LOG="/tmp/$REPO.log"
 readonly INSTALL_DIR="$HOME/.$REPO"
-OS="$(uname)"
-readonly OS="${OS,,}"
+OS="$(tr '[:upper:]' '[:lower:]' <<< "$(uname)")"
+readonly OS
 
 # Question logging
 print_question() {
