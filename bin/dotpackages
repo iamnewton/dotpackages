@@ -208,6 +208,7 @@ fi
 
 if [ -x "$(command -v fzf)" ]; then
 	print_process "Installing FZF keybindings and fuzzy completion"
+	print_info "Do not say 'yes' to update the shell configuration, it's already set up"
 	"$(brew --prefix)/opt/fzf/install"
 
 	[[ $? ]] && print_success "Installed FZF keybindings and fuzzy completion"
