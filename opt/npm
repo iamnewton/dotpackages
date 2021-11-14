@@ -13,6 +13,7 @@ devtool
 empty-trash-cli
 fkill-cli
 fullname-cli
+fx-completion
 globby-cli
 html-inspector
 imageoptim-cli
