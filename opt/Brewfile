@@ -26,7 +26,6 @@ brew "wget"
 brew "z"
 
 # additional
-cask "1password-cli"
 brew "atdtool"
 brew "doctl"
 brew "dos2unix"
@@ -54,7 +53,13 @@ brew "shellcheck"
 brew "slackcat"
 brew "tidy-html5"
 brew "yamllint"
+
+cask "1password-cli"
+
 whalebrew "whalebrew/ffmpeg"
 whalebrew "whalebrew/httpie"
 whalebrew "whalebrew/speedtest"
 whalebrew "whalebrew/youtube-dl"
+
+tap "cooklang/tap"
+brew "cooklang/tap/cook"
