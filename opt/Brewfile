@@ -26,7 +26,6 @@ brew "wget"
 brew "z"
 
 # additional
-brew "atdtool"
 brew "doctl"
 brew "dos2unix"
 brew "gh"
