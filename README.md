@@ -19,18 +19,11 @@ If you're on MacOS then you already have these, but a Linux system may not come 
 * [curl](http://curl.haxx.se)
 * [git](http://git-scm.com)
 
-If you use the installation command above, then no need to worry as it will handle all of the dependencies for you, so it's best advised to use, but the following are also required if you plan to manually install and run the CLI.
+If you use the installation command above, then no need to worry as it will handle the dependencies for you, so it's best advised to use, but the following are also required if you plan to manually install and run the CLI.
 
 * [homebrew](http://brew.sh)
 * [node](http://nodejs.org)/[npm](https://www.npmjs.org)
 
-## Features
+## Packages
 
-There are several package installations handled via Homebrew & NPM that are listed in the [wiki](https://github.com/iamnewton/dotpackages/wiki). If you want to modify what is installed by default, removing or adding is possible by updating the package in the appropriate file.  Each package is stored in the `opt` directory and named for the package management software that is used.
-
-:exclamation: N.B. Each package should be on a new line.
-
-### Package Management libraries
-
-* [Homebrew formulae](https://github.com/iamnewton/dotpackages/wiki/Homebrew)
-* [Node packages](https://github.com/iamnewton/dotpackages/wiki/Node)
+Check out the [README in `/opt`](./opt/README.md) for a list of packages.

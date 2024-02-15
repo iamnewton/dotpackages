@@ -1,3 +1,5 @@
+brew mas
+
 # utilities
 cask "1password"
 cask "alfred"
@@ -6,7 +8,6 @@ cask "dash"
 cask "fig"
 cask "gpg-suite"
 cask "iterm2"
-cask "marked"
 cask "postman"
 cask "slack"
 
@@ -33,4 +34,7 @@ cask "safari-technology-preview"
 
 # mac app store apps
 mas "Magnet", id: 441258766
+mas "Marked 2", id: 890031187
 mas "Textastic", id: 572491815
+mas "Xcode", id: 497799835
+mas "Dato", id: 1470584107
