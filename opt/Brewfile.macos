@@ -2,14 +2,17 @@ brew mas
 
 # utilities
 cask "1password"
-cask "alfred"
+# cask "alfred" - using raycast for now
 cask "choosy"
-cask "dash"
-cask "fig"
+# cask "dash" - they're charging subscriptions; don't use anymore
+# cask "fig" - favoring warp which has autocomplete
+cask "figma"
 cask "gpg-suite"
-cask "iterm2"
+# cask "iterm2" - favoring warp
 cask "postman"
+cask "raycast"
 cask "slack"
+cask "warp"
 
 # browsers
 tap "homebrew/cask-versions"
@@ -33,8 +36,9 @@ cask "microsoft-edge-dev"
 cask "safari-technology-preview"
 
 # mac app store apps
-mas "Magnet", id: 441258766
+# mas "Magnet", id: 441258766 - using raycast for this function
 mas "Marked 2", id: 890031187
 mas "Textastic", id: 572491815
 mas "Xcode", id: 497799835
-mas "Dato", id: 1470584107
+# mas "Dato", id: 1470584107 - using raycast for this function
+mas "Velja", id: 1607635845 - using this over choosy for now
