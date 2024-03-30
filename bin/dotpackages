@@ -6,14 +6,14 @@ readonly USERNAME="iamnewton"
 readonly REPO="dotpackages"
 readonly LOG="/tmp/$REPO.log"
 readonly INSTALL_DIR="$HOME/.$REPO"
-OS="$(tr '[:upper:]' '[:lower:]' <<< "$(uname)")"
+OS="$(tr '[:upper:]' '[:lower:]' <<<"$(uname)")"
 readonly OS
 
 # Question logging
 print_question() {
 	local message=$1
 
-	echo "$(date) QUESTION:  $message" >> "$LOG"
+	echo "$(date) QUESTION:  $message" >>"$LOG"
 	printf "\\n%s===> %s?%s " "$(tput setaf 3)" "$message" "$(tput sgr0)"
 }
 
@@ -21,7 +21,7 @@ print_question() {
 print_process() {
 	local message=$1
 
-	echo "$(date) PROCESSING: $message" >> "$LOG"
+	echo "$(date) PROCESSING: $message" >>"$LOG"
 	printf "%s┃%s %s...\\n" "$(tput setaf 6)" "$(tput sgr0)$(tput setaf 7)" "$message$(tput sgr0)"
 }
 
@@ -29,7 +29,7 @@ print_process() {
 print_info() {
 	local message=$1
 
-	echo "$(date) INFO: $message" >> $LOG
+	echo "$(date) INFO: $message" >>$LOG
 	printf "%sInfo:%s\\n" "$(tput setaf 6)" "$(tput sgr0) $message"
 }
 
@@ -37,7 +37,7 @@ print_info() {
 print_warning() {
 	local message=$1
 
-	echo "$(date) WARNING: $message" >> "$LOG"
+	echo "$(date) WARNING: $message" >>"$LOG"
 	printf "%s⚠ Warning:%s!\\n" "$(tput setaf 3)" "$(tput sgr0) $message"
 }
 
@@ -45,7 +45,7 @@ print_warning() {
 print_error() {
 	local message=$1
 
-	echo "$(date) ERROR: $message" >> "$LOG"
+	echo "$(date) ERROR: $message" >>"$LOG"
 	printf "%s⊘ Error:%s %s. Aborting!\\n" "$(tput setaf 1)" "$(tput sgr0)" "$message"
 }
 
@@ -53,7 +53,7 @@ print_error() {
 print_success() {
 	local message=$1
 
-	echo "$(date) SUCCESS: $message" >> "$LOG"
+	echo "$(date) SUCCESS: $message" >>"$LOG"
 	printf "%s✓ Success:%s\\n" "$(tput setaf 2)" "$(tput sgr0) $message"
 }
 
@@ -76,7 +76,7 @@ npm_package() {
 
 	# Test whether npm package is already installed
 	print_process "Checking if $package is installed"
-	if ! npm list -g "$package" | grep "$package" &> /dev/null; then
+	if ! npm list -g "$package" | grep "$package" &>/dev/null; then
 		print_process "Installing $package"
 		npm install --global --quiet "$package"
 	else
@@ -88,20 +88,19 @@ npm_package() {
 install_packages() {
 	local file=$1
 
-	while IFS="" read -r p || [ -n "$p" ]
-	do
+	while IFS="" read -r p || [ -n "$p" ]; do
 		#printf '%s\n' "$p"
 		npm_package "$p"
-	done < "$file"
+	done <"$file"
 }
 
 # Check for Homebrew; install brew
-if ! type -P 'brew' &> /dev/null; then
+if ! type -P 'brew' &>/dev/null; then
 	print_process "Installing Homebrew"
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 	# If we're on Linux, insert brew into the path temporarily to be able to use later
-	if [[ "$OS" == "linux"  ]]; then
+	if [[ "$OS" == "linux" ]]; then
 		print_process "Sourcing Homebrew to PATH"
 		eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	fi
@@ -171,7 +170,7 @@ if ! [[ -d "$INSTALL_DIR/.git" ]]; then
 fi
 
 # Install Homebrew formulae
-if ! type -P 'brew' &> /dev/null; then
+if ! type -P 'brew' &>/dev/null; then
 	print_error "brew not found"
 	exit 1
 else
@@ -186,7 +185,7 @@ else
 fi
 
 # Install Node packages
-if ! type -P 'npm' &> /dev/null; then
+if ! type -P 'npm' &>/dev/null; then
 	print_error "npm not found"
 	exit 1
 else
@@ -201,7 +200,7 @@ fi
 # Automatically set 1Password session after logging in
 if [ -x "$(command -v op)" ]; then
 	print_process "Configuring 1Password CLI"
-	printf "eval \$(op signin %s)\\n" "$USERNAME" >> "$HOME/.bash_profile.local"
+	printf "eval \$(op signin %s)\\n" "$USERNAME" >>"$HOME/.bash_profile.local"
 
 	[[ $? ]] && print_success "Configured 1Password CLI"
 fi
