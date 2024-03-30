@@ -213,7 +213,19 @@ if [ -x "$(command -v fzf)" ]; then
 	[[ $? ]] && print_success "Installed FZF keybindings and fuzzy completion"
 fi
 
-if [[ "$OS" == "darwin"  ]]; then
+# Install Gitmoji Fuzzy Hook
+if ! type -P 'git' &>/dev/null; then
+	print_error "git not found"
+	exit 1
+else
+	print_process "Installing Gitmoji"
+	git clone https://gitlab.com/raabf/gitmoji-fuzzy-hook.git /usr/local/gitmoji-fuzzy-hook
+	ln -sfn /usr/local/gitmoji-fuzzy-hook/bin/gitmoji-fuzzy-hook-init.sh /usr/local/bin/gitmoji-fuzzy-hook-init
+
+	[[ $? ]] && print_success "Installed Gitmoji"
+fi
+
+if [[ "$OS" == "darwin" ]]; then
 	seek_confirmation "Do you want to install the MacOS apps?"
 	if is_confirmed; then
 		brew install mas
