@@ -34,6 +34,7 @@ cask "microsoft-edge"
 cask "microsoft-edge-beta"
 cask "microsoft-edge-dev"
 cask "safari-technology-preview"
+cask "screen-studio"
 
 # mac app store apps
 # mas "Magnet", id: 441258766 - using raycast for this function
