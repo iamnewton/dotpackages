@@ -3,7 +3,7 @@ brew mas
 # utilities
 cask "1password"
 # cask "alfred" - using raycast for now
-cask "choosy"
+# cask "choosy" - using velja for now
 # cask "dash" - they're charging subscriptions; don't use anymore
 # cask "fig" - favoring warp which has autocomplete
 cask "figma"
@@ -35,6 +35,7 @@ cask "microsoft-edge-beta"
 cask "microsoft-edge-dev"
 cask "safari-technology-preview"
 cask "screen-studio"
+cask "shottr"
 
 # mac app store apps
 # mas "Magnet", id: 441258766 - using raycast for this function
