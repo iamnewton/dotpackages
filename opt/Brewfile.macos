@@ -6,9 +6,12 @@ cask "1password"
 # cask "choosy" - using velja for now
 # cask "dash" - they're charging subscriptions; don't use anymore
 # cask "fig" - favoring warp which has autocomplete
+cask "elgato-stream-deck"
+cask "elgato-wave-link"
 cask "figma"
 cask "gpg-suite"
 # cask "iterm2" - favoring warp
+cask "notion"
 cask "postman"
 cask "raycast"
 cask "slack"
@@ -16,6 +19,7 @@ cask "warp"
 
 # browsers
 tap "homebrew/cask-versions"
+cask "arc"
 cask "brave-browser"
 cask "brave-browser-beta"
 cask "brave-browser-dev"
@@ -39,8 +43,11 @@ cask "shottr"
 
 # mac app store apps
 # mas "Magnet", id: 441258766 - using raycast for this function
+mas "Goodnotes 3", id: 1444383602
 mas "Marked 2", id: 890031187
 mas "Textastic", id: 572491815
+mas "LumaFusion", id: 1062022008
+mas "Things 3", id: 904280696
 mas "Xcode", id: 497799835
 # mas "Dato", id: 1470584107 - using raycast for this function
 mas "Velja", id: 1607635845 - using this over choosy for now
