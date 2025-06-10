@@ -1,11 +1,6 @@
-brew mas
+"mas"
 
 # utilities
-cask "1password"
-# cask "alfred" - using raycast for now
-# cask "choosy" - using velja for now
-# cask "dash" - they're charging subscriptions; don't use anymore
-# cask "fig" - favoring warp which has autocomplete
 cask "elgato-stream-deck"
 cask "elgato-wave-link"
 cask "figma"
@@ -18,36 +13,30 @@ cask "slack"
 cask "warp"
 
 # browsers
-tap "homebrew/cask-versions"
-cask "arc"
 cask "brave-browser"
-cask "brave-browser-beta"
-cask "brave-browser-dev"
-cask "brave-browser-nightly"
+cask "brave-browser@beta"
+cask "brave-browser@nightly"
 brew "chrome-cli"
 cask "chromium"
 cask "firefox"
-cask "firefox-beta"
-cask "firefox-developer-edition"
-cask "firefox-nightly"
+cask "firefox@developer-edition"
+cask "firefox@nightly"
 cask "google-chrome"
-cask "google-chrome-beta"
-cask "google-chrome-canary"
-cask "google-chrome-dev"
+cask "google-chrome@beta"
+cask "google-chrome@canary"
+cask "google-chrome@dev"
 cask "microsoft-edge"
-cask "microsoft-edge-beta"
-cask "microsoft-edge-dev"
+cask "microsoft-edge@beta"
+cask "microsoft-edge@dev"
 cask "safari-technology-preview"
 cask "screen-studio"
 cask "shottr"
 
 # mac app store apps
-# mas "Magnet", id: 441258766 - using raycast for this function
 mas "Goodnotes 3", id: 1444383602
 mas "Marked 2", id: 890031187
 mas "Textastic", id: 572491815
 mas "LumaFusion", id: 1062022008
 mas "Things 3", id: 904280696
 mas "Xcode", id: 497799835
-# mas "Dato", id: 1470584107 - using raycast for this function
-mas "Velja", id: 1607635845 - using this over choosy for now
+mas "Velja", id: 1607635845

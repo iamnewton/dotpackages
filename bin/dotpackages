@@ -219,8 +219,9 @@ if ! type -P 'git' &>/dev/null; then
 	exit 1
 else
 	print_process "Installing Gitmoji"
-	git clone https://gitlab.com/raabf/gitmoji-fuzzy-hook.git /usr/local/gitmoji-fuzzy-hook
-	ln -sfn /usr/local/gitmoji-fuzzy-hook/bin/gitmoji-fuzzy-hook-init.sh /usr/local/bin/gitmoji-fuzzy-hook-init
+	git clone https://gitlab.com/raabf/gitmoji-fuzzy-hook.git "$HOME/.local/share/gitmoji-fuzzy-hook"
+	[ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
+	ln -sfn "$HOME/.local/share/gitmoji-fuzzy-hook/bin/gitmoji-fuzzy-hook-init.sh" "$HOME/.local/bin/gitmoji-fuzzy-hook-init"
 
 	[[ $? ]] && print_success "Installed Gitmoji"
 fi
