@@ -1,6 +1,7 @@
 "mas"
 
 # utilities
+cask "docker"
 cask "elgato-stream-deck"
 cask "elgato-wave-link"
 cask "figma"

@@ -85,13 +85,27 @@ npm_package() {
 	fi
 }
 
+whalebrew_package() {
+	local package=$1
+
+	print_process "Checking if $package is installed"
+	if ! whalebrew list | grep -q "$package"; then
+		print_process "Installing $package"
+		whalebrew install "$package"
+	else
+		print_process "$package is already installed."
+	fi
+}
+
 install_packages() {
-	local file=$1
+	local installer_func=$1
+	local file=$2
 
 	while IFS="" read -r p || [ -n "$p" ]; do
-		#printf '%s\n' "$p"
-		npm_package "$p"
-	done <"$file"
+		# Skip blank lines or comments
+		[[ -z "$p" || "$p" =~ ^# ]] && continue
+		"$installer_func" "$p"
+	done < "$file"
 }
 
 # Check for Homebrew; install brew
@@ -192,7 +206,7 @@ else
 	print_process "Installing and updating npm packages"
 	npm cache clean -f
 	n stable
-	install_packages "$INSTALL_DIR/opt/npm"
+	install_packages npm_package "$INSTALL_DIR/opt/npm"
 
 	[[ $? ]] && print_success "Installed all Node packages"
 fi
@@ -234,5 +248,17 @@ if [[ "$OS" == "darwin" ]]; then
 		[[ $? ]] && print_success "Installed all MacOS apps"
 	fi
 fi
+
+# Install Whalebrew packages
+if ! type -P 'whalebrew' &>/dev/null; then
+	print_error "whalebrew not found"
+	exit 1
+else
+	print_process "Installing and updating whalebrew packages"
+	install_packages whalebrew_package "$INSTALL_DIR/opt/Brewfile.whale"
+
+	[[ $? ]] && print_success "Installed all Whalebrew packages"
+fi
+
 
 [[ $? ]] && print_success "dotpackages installed."
