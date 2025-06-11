@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-source "$LOG_LIB"
+# fallback in case LOG_LIB isn't already set
+LOG_LIB="${LOG_LIB:-/usr/local/bin/log}"
+
+if [[ -f "$LOG_LIB" ]]; then
+	source "$LOG_LIB"
+else
+	echo "⚠️  LOG_LIB not found at $LOG_LIB. Continuing without logging functions."
+fi
 
 # constants
 readonly GITHUB_URL="github.com"
@@ -59,7 +67,7 @@ install_packages() {
 		# Skip blank lines or comments
 		[[ -z "$p" || "$p" =~ ^# ]] && continue
 		"$installer_func" "$p"
-	done < "$file"
+	done <"$file"
 }
 
 # Check for Homebrew; install brew
@@ -213,6 +221,5 @@ else
 
 	[[ $? ]] && print_success "Installed all Whalebrew packages"
 fi
-
 
 [[ $? ]] && print_success "dotpackages installed."
