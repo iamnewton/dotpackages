@@ -1,6 +1,7 @@
 "mas"
 
 # utilities
+cask "chatgpt"
 cask "docker"
 cask "elgato-stream-deck"
 cask "elgato-wave-link"
